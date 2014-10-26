@@ -22,6 +22,9 @@ class Game
         # this point would be at screen coordinates 0, 0 (top left) which is usually undesirable.
         game.iso.anchor.set 0.5, 0.2
 
+        # Expand world borders. Required for camera movement
+        game.world.setBounds 0, 0, 2048, 2048
+
     create: ->
         # Give the stage a badass color
         game.stage.backgroundColor = 0xbada55
@@ -36,11 +39,21 @@ class Game
         cursorPos = new Phaser.Plugin.Isometric.Point3()
 
     update: ->
+        activePointer = game.input.activePointer
+
+        # Fix cursor position in isometric world... or something
+        # Works for now
+        newPoint = Phaser.Point.add(activePointer.position, game.camera.position)
+        newPoint.x -= game.width / 2
+        newPoint.y -= game.height / 2
+
         # Update cursor position and shit
-        game.iso.unproject game.input.activePointer.position, cursorPos
+        game.iso.unproject newPoint, cursorPos
 
         # Loop through tiles and check their position with the cursor
         isoGroup.forEach (tile) ->
+            #tile.isoX = cursorPos.x
+            #tile.isoY = cursorPos.y
             inBounds = tile.isoBounds.containsXY cursorPos.x, cursorPos.y
             # TODO: origTint = tile.tint
 
@@ -63,6 +76,18 @@ class Game
                     isoZ: 0,
                     200, Phaser.Easing.Quintic.Out, true
 
+        # Move camera with mouse
+        # Should we not put origDragPoint in game object?
+        # Annotate
+        if activePointer.isDown
+            if game.origDragPoint
+                game.camera.x += game.origDragPoint.x - activePointer.x
+                game.camera.y += game.origDragPoint.y - activePointer.y
+
+            game.origDragPoint = activePointer.position.clone()
+        else
+            game.origDragPoint = null
+
     render: ->
         # Render the fps in top left corner
         game.debug.text game.time.fps or "--", 2, 14, "#ffffff"
@@ -75,6 +100,9 @@ class Game
                 tile.anchor.set 0.5, 0
 
                 tile.tint = util.randomHex()
+        ###tile = game.add.isoSprite 256, 256, 0, "tile", 0, isoGroup
+        tile.anchor.set 0.5, 0.2
+        tile.tint = util.randomHex()###
 
 # Export the entire class
 module.exports = Game

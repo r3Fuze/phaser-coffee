@@ -18,7 +18,7 @@ class Game
 
         game.plugins.add new Phaser.Plugin.Isometric game
 
-        game.world.setBounds 0, 0, 2048, 2048
+        #game.world.setBounds 0, 0, 2048, 2048
         game.physics.startSystem Phaser.Plugin.Isometric.ISOARCADE
 
         game.iso.anchor.setTo 0.5, 0 #0.2
@@ -35,18 +35,27 @@ class Game
         cube = null
 
         # It works I guess..
-        for x in [1024...0] by -140
+        ###for x in [1024...0] by -140
             for y in [1024...0] by -140
-                cube = game.add.isoSprite x, y, 0, "cube", 0, isoGroup
-                cube.anchor.set 0.5
+                cube = game.add.isoSprite x, y, 0, "tile", 0, isoGroup
+                cube.anchor.set 0.5, 0.2
                 cube.tint = util.randomHex()
 
                 game.physics.isoArcade.enable cube
                 cube.body.collideWorldBounds = yes
                 cube.body.bounce.set 1, 1, 0.2
-                cube.body.drag.set 100, 100, 0
+                cube.body.drag.set 100, 100, 0###
 
-        player = game.add.isoSprite 128, 128, 0, "cube", 0, isoGroup
+        cube = game.add.isoSprite 128 * 2, 128 * 2, 0, "tile", 0, isoGroup
+        cube.anchor.set 0.5, 0
+        cube.tint = util.randomHex()
+
+        #game.physics.isoArcade.enable cube
+        #cube.body.collideWorldBounds = yes
+        #cube.body.bounce.set 1, 1, 0.2
+        #cube.body.drag.set 100, 100, 0
+
+        player = game.add.isoSprite 128, 128, 0, "cube", 0
         player.tint = util.randomHex()
         player.anchor.set 0.5
         game.physics.isoArcade.enable player
@@ -89,21 +98,12 @@ class Game
         game.physics.isoArcade.collide isoGroup
         game.iso.topologicalSort isoGroup
 
-        if game.input.activePointer.isDown
-            if game.origDragPoint
-                # move the camera by the amount the mouse has moved since last update
-                game.camera.x += game.origDragPoint.x - game.input.activePointer.position.x
-                game.camera.y += game.origDragPoint.y - game.input.activePointer.position.y
-
-            # set new drag origin to current position
-            game.origDragPoint = game.input.activePointer.position.clone()
-        else
-            game.origDragPoint = null
-
         game.iso.unproject game.input.activePointer.position, cursorPos
 
         isoGroup.forEach (tile) ->
             #console.log "each"
+            #tile.isoX = cursorPos.x
+            #tile.isoY = cursorPos.y
             inBounds = tile.isoBounds.containsXY cursorPos.x, cursorPos.y
             origTint = tile.tint
             if not tile.selected and inBounds
