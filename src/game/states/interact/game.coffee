@@ -50,6 +50,7 @@ class Game
         # Update cursor position and shit
         game.iso.unproject newPoint, cursorPos
 
+        # TODO: TRY MAKING TILES SELECTABLE INSTEAD OF HOVER
         # Loop through tiles and check their position with the cursor
         isoGroup.forEach (tile) ->
             #tile.isoX = cursorPos.x
