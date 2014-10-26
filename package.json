@@ -1,0 +1,47 @@
+{
+  "name": "phaser-game",
+  "description": "null",
+  "readme": "null",
+  "repository": "null",
+  "version": "0.0.0",
+  "dependencies": {},
+  "browser": {
+    "phaser": "./src/bower_components/phaser/build/phaser.min.js",
+    "phaser-plugin-isometric": "./src/bower_components/phaser-plugin-isometric/dist/phaser-plugin-isometric.min.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "coffeeify"
+    ]
+  },
+  "browserify-shim": {
+    "phaser": "Phaser",
+    "phaser-plugin-isometric": "PhaserIsometric"
+  },
+  "devDependencies": {
+    "browser-sync": "~0.8.2",
+    "browserify": "~3.36.0",
+    "browserify-shim": "~3.4.1",
+    "chance": "^0.6.1",
+    "coffee-script": "^1.8.0",
+    "coffeeify": "~0.6.0",
+    "connect": "~2.14.3",
+    "gulp": "~3.8.0",
+    "gulp-changed": "~0.3.0",
+    "gulp-compass": "~1.1.8",
+    "gulp-imagemin": "~0.1.5",
+    "gulp-notify": "~1.2.4",
+    "gulp-open": "~0.2.8",
+    "gulp-util": "~2.2.14",
+    "pretty-hrtime": "~0.2.1",
+    "vinyl-source-stream": "~0.1.1",
+    "watchify": "~0.10.1",
+    "yargs": "^1.3.1"
+  },
+  "scripts": {
+    "post-install": "node ./node_modules/bower/bin/bower install",
+    "start": "node ./node_modules/gulp/bin/gulp.js",
+    "build": "node ./node_modules/gulp/bin/gulp.js build"
+  }
+}
