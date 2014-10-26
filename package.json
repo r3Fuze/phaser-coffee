@@ -1,9 +1,12 @@
 {
   "name": "phaser-game",
-  "description": "null",
-  "readme": "null",
-  "repository": "null",
+  "description": "Phaser games with coffeescript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/r3fuze/phaser-coffee.git"
+  },
   "version": "0.0.0",
+  "private": true,
   "dependencies": {},
   "browser": {
     "phaser": "./src/bower_components/phaser/build/phaser.min.js",
